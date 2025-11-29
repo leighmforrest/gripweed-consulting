@@ -16,4 +16,12 @@ import SocialBar from "./SocialBar.astro"
         </ul>
     </div>
 </nav>
-<script src="/public/scripts/menu.js" is:inline></script>
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.querySelector("#hambuger");
+  const menu = document.querySelector("#menu");
+
+  hamburger.addEventListener("click", ()=> menu.classList.toggle("hidden"))
+});
+
+</script>
