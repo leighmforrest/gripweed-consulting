@@ -1,5 +1,8 @@
 ---
 import Navbar from "../components/Navbar.astro";
+import Main from "../components/Main.astro";
+import Footer from "../components/Footer.astro";
+
 import "../styles/global.css";
 ---
 <!doctype html>
@@ -11,8 +14,11 @@ import "../styles/global.css";
 		<meta name="generator" content={Astro.generator} />
 		<title>Gripweed Consulting</title>
 	</head>
-	<body class="bg-blue-500">
+	<body class="flex flex-col min-h-screen">
 		<Navbar/>
-		<slot />
+		<Main>
+			<slot />
+		</Main>
+		<Footer />
 	</body>
 </html>

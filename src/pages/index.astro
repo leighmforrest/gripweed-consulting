@@ -1,7 +1,12 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Banner from "../components/Banner.astro";
 ---
 
 <Layout>
-	<h1 class="text-special-yellow text-4xl">Hello World!</h1>
+  <Banner>
+    <div class="flex items-center justify-center w-full h-full bg-blue-700">
+      <h1 class="text-special-yellow text-4xl">Hello World!</h1>
+    </div>
+  </Banner>
 </Layout>
