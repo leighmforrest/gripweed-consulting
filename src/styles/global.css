@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Hammer Fat';
+    src: url("../assets/hammerfat.ttf");
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-vermillion: #D83114;
+    --color-special-yellow: #FFC107;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Hammer Fat", sans-serif;
+}
