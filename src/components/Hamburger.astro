@@ -1,4 +1,29 @@
 ---
 
 ---
-<button class="md:hidden" id="hambuger">x</button>
+
+<button class="hamburger md:hidden flex flex-col gap-2 cursor-pointer" id="hamburger">
+  <span
+    class="w-[30px] h-[4px] transition-all duration-300 ease-in-out bg-special-yellow"
+  ></span>
+  <span
+    class="w-[30px] h-[4px] transition-all duration-300 ease-in-out bg-special-yellow"
+  ></span>
+  <span
+    class="w-[30px] h-[4px] transition-all duration-500 ease-in-out bg-special-yellow"
+  ></span>
+</button>
+
+<style>
+    #hamburger.open span:nth-child(1) {
+        @apply translate-y-[1rem] rotate-45;
+    }
+
+    #hamburger.open span:nth-child(2) {
+        @apply opacity-0;
+    }
+
+    #hamburger.open span:nth-child(3) {
+        @apply translate-y-[-.5rem] -rotate-45;
+    }
+</style>
