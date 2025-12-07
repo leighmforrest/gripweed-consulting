@@ -1,0 +1,31 @@
+---
+import Icon from "./Icon";
+---
+
+<button id="darkModeButton">
+  <Icon name="CiLight" set="ci" size={24} className="hidden dark:block" />
+  <Icon name="CiDark" set="ci" size={24} className="block dark:hidden" />
+</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const darkModeButton = document.querySelector("#darkModeButton");
+    const root = document.documentElement;
+
+    // On load: respect user preference
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    darkModeButton?.addEventListener("click", () => {
+        const isDark = root.classList.toggle("dark");
+        localStorage.theme = isDark ? "dark" : "light"
+    });
+  });
+</script>

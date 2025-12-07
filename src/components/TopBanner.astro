@@ -1,0 +1,17 @@
+---
+import Hero from "../components/Hero.astro";
+import heroImage from "../images/hero.jpg";
+---
+
+<Hero heroImage={heroImage}>
+  <div
+    class="flex flex-col justify-center items-center text-center z-50 text-special-yellow dark:text-dark-special-yellow gap-3"
+  >
+    <h1 class="text-3xl">Web Apps and Data for You</h1>
+    <button
+      class="branding text-2xl bg-vermillion dark:bg-dark-vermillion hover:bg-orange-600 dark:hover:bg-orange-800 text-special-yellow dark:text-dark-special-yellow font-bold py-2 px-4 rounded w-fit align-middle"
+    >
+      Learn More
+    </button>
+  </div>
+</Hero>

@@ -1,10 +1,12 @@
 ---
+import Icon from "./Icon";
+import DarkModeButton from "./DarkModeButton.astro";
 import SocialBar from "./SocialBar.astro";
 import Hamburger from "./Hamburger.astro";
 ---
 
 <nav
-  class="w-full flex items-center justify-between z-20 p-3 bg-vermillion text-special-yellow"
+  class="w-full flex items-center justify-between z-20 p-3 bg-vermillion text-special-yellow dark:bg-dark-vermillion dark:text-dark-special-yellow"
 >
   <div class="brand whitespace-nowrap">
     <h1 class="text-3xl md:text-5xl">Gripweed Consulting</h1>
@@ -12,7 +14,7 @@ import Hamburger from "./Hamburger.astro";
   <Hamburger />
   <div
     id="menu"
-    class="absolute top-15 left-0 w-full border-t-1 bg-vermillion border-t-special-yellow md:static md:w-fit md:flex
+    class="absolute top-15 left-0 w-full border-t md:border-0 bg-vermillion border-t-special-yellow dark:bg-dark-vermillion dark:border-t-dark-special-yellow md:static md:w-fit md:flex
          transform transition-all duration-300 ease-in-out origin-top
          opacity-0 -translate-y-5 pointer-events-none
          md:opacity-100 md:translate-y-0 md:pointer-events-auto"
@@ -20,8 +22,9 @@ import Hamburger from "./Hamburger.astro";
     <ul class="flex flex-col md:flex-row md:gap-2 items-center text-3xl">
       <li>Home</li>
       <li>Contact</li>
+      <li><DarkModeButton/></li>
       <li>
-        <SocialBar client:load />
+        <SocialBar />
       </li>
     </ul>
   </div>

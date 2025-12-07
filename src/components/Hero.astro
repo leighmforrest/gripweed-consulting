@@ -1,8 +1,13 @@
 ---
+import { Image } from "astro:assets";
 import Section from "../components/Section.astro";
+
+const { heroImage } = Astro.props;
 ---
 <Section>
-    <div class="flex items-center justify-center w-full h-full bg-blue-700">
-      <h1 class="text-special-yellow text-4xl">Hello World!</h1>
+    <div class="flex relative items-center justify-center w-full h-full bg-blue-700">
+        <div class="absolute z-15 inset-0 bg-black/60"></div>
+        <Image src={heroImage} alt="Gripweed Consulting" class="absolute top-0 left-0 h-full w-full object-cover" />
+      <slot />
     </div>
 </Section>

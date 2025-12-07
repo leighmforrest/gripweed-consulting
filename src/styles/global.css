@@ -10,6 +10,8 @@
 @theme {
     --color-vermillion: #D83114;
     --color-special-yellow: #FFC107;
+    --color-dark-vermillion: #9A1F0C;
+    --color-dark-special-yellow: #E0A806;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -18,4 +20,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #menu li {
         font-family: "Hammer Fat", sans-serif;
+}
+
+.branding {
+    font-family: "Hammer Fat", sans-serif;
 }
