@@ -12,6 +12,10 @@
     --color-special-yellow: #FFC107;
     --color-dark-vermillion: #9A1F0C;
     --color-dark-special-yellow: #E0A806;
+    --color-standard-text: #111827;
+    --color-dark-bg: #0D0D0D;
+    --color-dark-text: #EDEDED;
+    --color-dark-text-muted: #AFAFAF;
 }
 
 h1, h2, h3, h4, h5, h6 {
