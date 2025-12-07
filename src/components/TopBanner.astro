@@ -10,8 +10,20 @@ import heroImage from "../images/hero.jpg";
     <h1 class="text-3xl">Web Apps and Data for You</h1>
     <button
       class="branding text-2xl bg-vermillion dark:bg-dark-vermillion hover:bg-orange-600 dark:hover:bg-orange-800 text-special-yellow dark:text-dark-special-yellow font-bold py-2 px-4 rounded w-fit align-middle"
-    >
+      id="learnMoreButton"
+      >
       Learn More
     </button>
   </div>
 </Hero>
+
+<script>
+  import scrollIntoView from "../styles/scrollIntoView";
+
+  document.addEventListener("DOMContentLoaded", ()=> {
+    const learnMoreButton = document.querySelector("#learnMoreButton");
+    const target = document.querySelector("#about");
+
+    scrollIntoView(learnMoreButton, target)
+  })
+</script>
