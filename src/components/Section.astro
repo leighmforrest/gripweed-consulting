@@ -1,6 +1,6 @@
 ---
 const { sectionId = null } = Astro.props;
 ---
-<section class="flex items-center justify-center h-screen"  {...(sectionId ? { id: sectionId } : {})}>
+<section class="min-h-screen"  {...(sectionId ? { id: sectionId } : {})}>
     <slot/>   
 </section>

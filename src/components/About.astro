@@ -1,6 +1,33 @@
 ---
 import Section from "./Section.astro";
+import Image from "astro/components/Image.astro";
+import aboutImage from "../images/about.jpg";
 ---
+
 <Section sectionId="about">
-    <p>HAI</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full p-4 gap-4">
+    <div class="flex flex-col p-4">
+      <h2
+        class="text-4xl text-vermillion dark:text-dark-vermillion text-center"
+      >
+        About Us
+      </h2>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cum corrupti
+        numquam ducimus odio fugiat, ipsam esse reprehenderit magni impedit
+        molestias dolorem eaque veritatis ratione nam maxime est? Placeat
+        necessitatibus facere dolorum inventore temporibus voluptate odit quasi
+        animi illo pariatur. Sed repellendus incidunt earum laudantium unde
+        velit nam. Nulla vero enim aliquid! Corrupti est quos provident ex
+        tenetur architecto at repudiandae, quam soluta, officia magnam unde
+        assumenda temporibus! Omnis beatae harum repellat reprehenderit, dolor
+        id quae, consequuntur, vel nisi autem nulla quisquam fuga voluptatibus.
+        Eius beatae quod reiciendis, esse maiores enim doloribus a
+        reprehenderit, quo est ad tempore eum, expedita saepe.
+      </p>
+    </div>
+    <div class="relative w-full aspect-square overflow-hidden">
+          <Image src={aboutImage} alt="Philadelphia Skyline"class="h-full h-full object-cover"/>
+    </div>
+  </div>
 </Section>
