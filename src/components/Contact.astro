@@ -4,6 +4,7 @@ import Section from "./Section.astro";
 
 <Section sectionId="contact">
   <div class="grid grid-cols-1 md:grid-cols-2 min-h-screen gap-4 p-4">
+    <!-- Left Side -->
     <div class="flex flex-col p-4 h-full">
       <h2
         class="text-4xl text-vermillion dark:text-dark-vermillion text-center"
@@ -11,19 +12,11 @@ import Section from "./Section.astro";
         Get In Touch
       </h2>
       <p class="mt-4 text-center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ad
-        tempore odit praesentium ipsa assumenda nisi odio eius amet! Rerum
-        deleniti, quo sit cumque maiores dolor vitae veritatis doloribus
-        consequuntur? Maxime quas alias ex ab quae nulla sint hic, voluptates
-        quibusdam dolores doloribus dolore aliquam sapiente vero ea omnis
-        possimus dolor libero ad sit laudantium nam. Nesciunt, asperiores dolor
-        explicabo, architecto suscipit porro dolorum laborum nostrum unde beatae
-        voluptate iure ullam commodi labore quis fugit corrupti quibusdam atque
-        laudantium repellat aspernatur! Possimus officiis ut ipsam impedit ipsum
-        reiciendis eaque omnis excepturi? Quae aut voluptatibus quas consectetur
-        quia quibusdam culpa asperiores?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit...
       </p>
     </div>
+
+    <!-- Form -->
     <form
       class="flex flex-col rounded-xl shadow-md border border-gray-400 dark:border-gray-500 p-4 h-full"
     >
@@ -32,53 +25,65 @@ import Section from "./Section.astro";
       >
         Contact Us
       </h2>
+      <!-- Honeypot field -->
+      <div class="hidden">
+        <label for="website">Website</label>
+        <input type="text" name="website" autocomplete="off" />
+      </div>
+
+      <!-- Full Name -->
       <div class="flex flex-col mt-4">
         <label
           for="fullName"
           class="block mb-2 text-md font-medium text-gray-900 dark:text-gray-400"
+          >Full Name</label
         >
-          Full Name
-        </label>
         <input
           type="text"
           name="fullName"
           placeholder="Full Name"
-          class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-vermillion dark:focus:ring-special-yellow focus:border-transparent text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700"
+          class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-vermillion"
         />
+        <p class="text-red-500 text-sm mt-1 hidden error-message"></p>
       </div>
+
+      <!-- Email -->
       <div class="flex flex-col mt-4">
         <label
-          for="address"
+          for="emailAddress"
           class="block mb-2 text-md font-medium text-gray-900 dark:text-gray-400"
+          >Email Address</label
         >
-          Email Address
-        </label>
         <input
           type="text"
-          name="address"
+          name="emailAddress"
           placeholder="Email Address"
-          class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-vermillion dark:focus:ring-special-yellow focus:border-transparent text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700"
+          class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-vermillion"
         />
+        <p class="text-red-500 text-sm mt-1 hidden error-message"></p>
       </div>
+
+      <!-- Message -->
       <div class="flex flex-col mt-4">
         <label
           for="message"
           class="block mb-2 text-md font-medium text-gray-900 dark:text-gray-400"
+          >Your message</label
         >
-          Your message
-        </label>
         <textarea
           name="message"
           rows="6"
           placeholder="Your message..."
-          class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-vermillion dark:focus:ring-special-yellow focus:border-transparent text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 resize-none"
+          class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-vermillion resize-none"
         ></textarea>
+        <p class="text-red-500 text-sm mt-1 hidden error-message"></p>
       </div>
+
       <div class="flex justify-end mt-4">
         <button
           id="submitContact"
           type="submit"
-          class="px-6 py-3 bg-vermillion text-white font-medium rounded-lg shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-vermillion focus:dark:ring-special-yellow"
+          class="px-6 py-3 bg-vermillion text-white font-medium rounded-lg shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-vermillion"
         >
           Send
         </button>
@@ -88,40 +93,89 @@ import Section from "./Section.astro";
 </Section>
 
 <script>
+  import { showError, clearError } from "../scripts/formErrors.js";
+
   document.addEventListener("DOMContentLoaded", () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const contactForm = document.querySelector("form");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    contactForm?.addEventListener("submit", (event) => {
+    const fields = {
+      fullName: { length: { min: 5, max: 50 } },
+      emailAddress: {
+        length: { min: 5, max: 50 },
+        pattern: {
+          regex: emailRegex,
+          message: "Please enter a valid email address.",
+        },
+      },
+      message: { length: { min: 5, max: 500 } },
+    };
+
+    const validateField = (field, formValues) => {
+      const input = contactForm.querySelector(`[name="${field}"]`);
+      const value = formValues[field]?.toString().trim();
+      clearError(input);
+
+      if (!value) {
+        showError(input, "This field is required.");
+        return false;
+      }
+
+      const { min, max } = fields[field].length;
+      if (value.length < min || value.length > max) {
+        showError(input, `Must be between ${min} and ${max} characters.`);
+        return false;
+      }
+
+      if (fields[field].pattern) {
+        const { regex, message } = fields[field].pattern;
+        if (!regex.test(value)) {
+          showError(input, message);
+          return false;
+        }
+      }
+
+      // Success: green border
+      input.classList.add(
+        "border-2",
+        "border-green-500",
+        "!focus:border-green-500"
+      );
+      return true;
+    };
+
+    Object.keys(fields).forEach((field) => {
+      const input = contactForm.querySelector(`[name="${field}"]`);
+      if (!input) return;
+
+      input.addEventListener("blur", () => {
+        const formValues = Object.fromEntries(
+          new FormData(contactForm).entries()
+        );
+        validateField(field, formValues);
+      });
+    });
+
+    contactForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      
-      const requiredFields = ["fullName", "address", "message"];
+      const formValues = Object.fromEntries(
+        new FormData(contactForm).entries()
+      );
+      let isValid = true;
 
-      // Validation
-      const form = new FormData(contactForm);
-
-      // convert FormData to a plain object
-      const formValues = Object.fromEntries(form.entries())
-
-      // Trim all string values
-      for (const key in formValues) {
-        if (requiredFields.includes(key)) {
-            formValues[key] = formValues[key].toString().trim()
-        } else {
-            console.log("This field is invalid");
-            delete formValues[key]
-        }
+      if (formValues.website) {
+        console.warn("Bot detected! Submission blocked.");
+        return; // stop processing
       }
 
-      // validate required fields
-      for (const field of requiredFields) {
-        if (!formValues[field]) {
-            alert(`Please fill out the ${field}`);
-            return;
-        }
-      }
+      Object.keys(fields).forEach((field) => {
+        if (!validateField(field, formValues)) isValid = false;
+      });
 
-      console.log(formValues)
+      if (!isValid) return;
+
+      console.log("Form is valid:", formValues);
+      // TODO: submit to server
     });
   });
 </script>

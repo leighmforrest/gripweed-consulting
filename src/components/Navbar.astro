@@ -8,7 +8,7 @@ import Hamburger from "./Hamburger.astro";
   class="w-full flex items-center justify-between z-50 p-3 bg-vermillion text-special-yellow dark:bg-dark-vermillion dark:text-dark-special-yellow"
 >
   <div class="brand whitespace-nowrap">
-    <h1 class="text-3xl md:text-5xl">Gripweed Consulting</h1>
+    <h1 class="text-3xl md:text-4xl">Gripweed Consulting</h1>
   </div>
   <Hamburger />
   <div
@@ -18,7 +18,7 @@ import Hamburger from "./Hamburger.astro";
          opacity-0 -translate-y-5 pointer-events-none
          md:opacity-100 md:translate-y-0 md:pointer-events-auto"
   >
-    <ul class="flex flex-col md:flex-row md:gap-2 items-center text-3xl">
+    <ul class="flex flex-col md:flex-row md:gap-3 items-center text-3xl">
       <li><a href="/">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -39,7 +39,7 @@ import Hamburger from "./Hamburger.astro";
     links.forEach(link => {
       link.addEventListener("click", (event)=> {
         event.preventDefault();
-        
+
         const href = link.getAttribute("href");
         const targetSection = document.querySelector(href)
         
