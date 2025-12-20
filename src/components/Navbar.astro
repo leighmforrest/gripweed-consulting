@@ -1,12 +1,11 @@
 ---
-import Icon from "./Icon";
 import DarkModeButton from "./DarkModeButton.astro";
 import SocialBar from "./SocialBar.astro";
 import Hamburger from "./Hamburger.astro";
 ---
 
 <nav
-  class="w-full flex items-center justify-between z-20 p-3 bg-vermillion text-special-yellow dark:bg-dark-vermillion dark:text-dark-special-yellow"
+  class="w-full flex items-center justify-between z-50 p-3 bg-vermillion text-special-yellow dark:bg-dark-vermillion dark:text-dark-special-yellow"
 >
   <div class="brand whitespace-nowrap">
     <h1 class="text-3xl md:text-5xl">Gripweed Consulting</h1>
@@ -20,19 +19,38 @@ import Hamburger from "./Hamburger.astro";
          md:opacity-100 md:translate-y-0 md:pointer-events-auto"
   >
     <ul class="flex flex-col md:flex-row md:gap-2 items-center text-3xl">
-      <li>Home</li>
-      <li>Contact</li>
-      <li><DarkModeButton/></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><DarkModeButton /></li>
       <li>
         <SocialBar />
       </li>
     </ul>
   </div>
 </nav>
+
 <script is:inline>
   document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector("#hamburger");
     const menu = document.querySelector("#menu");
+    const links = menu.querySelectorAll("a")
+
+    links.forEach(link => {
+      link.addEventListener("click", (event)=> {
+        event.preventDefault();
+        
+        const href = link.getAttribute("href");
+        const targetSection = document.querySelector(href)
+        
+        if (href.includes("#")) {
+          targetSection?.scrollIntoView({behavior: "smooth"})
+        }
+
+        hamburger.classList.remove("open");
+        menu.classList.remove("open");
+      })
+    })
 
     hamburger.addEventListener("click", () => {
       hamburger.classList.toggle("open");
@@ -45,6 +63,6 @@ import Hamburger from "./Hamburger.astro";
   @reference "tailwindcss";
 
   #menu.open {
-  @apply opacity-100 translate-y-0 pointer-events-auto;
-}
+    @apply opacity-100 translate-y-0 pointer-events-auto;
+  }
 </style>
