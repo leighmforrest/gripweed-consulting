@@ -23,5 +23,4 @@ export function clearError(input) {
   error.classList.add("hidden");
 
   input.classList.remove("border-red-500", "border-gray-300");
-  input.classList.add("border-green-500");
 }

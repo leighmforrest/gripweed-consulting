@@ -50,7 +50,7 @@
         rows="4"
         placeholder="write your message here"
         required></textarea>
-      <p id="char-count" class="text-sm" aria-live="polite"></p>
+      <p id="char-count" class="text-sm text-green-500" aria-live="polite"></p>
       <p class="text-red-500 text-sm mt-1 hidden error-message"></p>
     </div>
     <!-- honeypot field to catch bots.  -->
@@ -110,7 +110,7 @@
   @import "tailwindcss/theme" theme(reference);
 
   .form__input {
-    @apply w-full rounded-md border-3 p-2.5 transition outline-none;
+    @apply w-full rounded-md border-2 p-2.5 transition outline-none;
     @apply focus-visible:border-blue-600/70 focus-visible:ring-2 focus-visible:ring-blue-600/50;
   }
 
@@ -143,73 +143,144 @@
     const contactForm = document.querySelector("#contact-form");
     const successPanel = document.querySelector("#success-panel");
     const failurePanel = document.querySelector("#failure-panel");
+    const submitButton = document.querySelector(".submit-button");
+    const submitText = document.querySelector("#submit-text");
+    const spinner = document.querySelector("#spinner");
+    const charCount = document.querySelector("#char-count"); // for message char count
     const allItems = [contactForm, successPanel, failurePanel];
 
     const hideAll = () =>
       allItems.forEach((item) => item?.classList.add("hidden"));
 
-    /**
-     * Helper to validate an idividual field.
-     * @param field
-     */
+    // ---------- FIELD VALIDATION ----------
     const validateField = (field) => {
       const input = contactForm.querySelector(`[name="${field}"]`);
       const value = input?.value.trim();
 
-      // reset first
+      // reset errors
       clearError(input);
 
+      // Required
       if (!value) {
         showError(input, "This field is required.");
         return false;
       }
 
-      // length
+      // Length check
       const { min, max } = fields[field].length;
       if (value.length < min || value.length > max) {
         showError(input, `Must be between ${min} and ${max} characters.`);
         return false;
       }
 
-      // regex
+      // Regex check (if defined)
       if (fields[field].pattern && !fields[field].pattern.regex.test(value)) {
         showError(input, fields[field].pattern.message);
         return false;
       }
 
-      // field is valid
+      // Valid
       markValid(input);
       return true;
     };
 
+    // Attach blur validation to each field
     Object.keys(fields).forEach((field) => {
       const input = contactForm.querySelector(`[name="${field}"]`);
       if (!input) return;
-
-      // Attach blur validation once
       input.addEventListener("blur", () => validateField(field));
     });
 
-    contactForm?.addEventListener("submit", (e) => {
+    // Optional: update char count for message field
+    const messageInput = contactForm.querySelector("[name='message']");
+    if (messageInput && charCount) {
+      messageInput.addEventListener("input", () => {
+        charCount.textContent = `${messageInput.value.length}/${fields.message.length.max} chars`;
+      });
+    }
+
+    if (messageInput && charCount) {
+      messageInput.addEventListener("input", () => {
+        const len = messageInput.value.length;
+        const min = fields.message.length.min;
+        const max = fields.message.length.max;
+
+        charCount.textContent = `${len}/${max} chars`;
+
+        if (len < min || len > max) {
+          // Invalid length → red
+          charCount.classList.remove("text-green-500");
+          charCount.classList.add("text-red-500");
+        } else {
+          // Valid length → green
+          charCount.classList.remove("text-red-500");
+          charCount.classList.add("text-green-500");
+        }
+      });
+    }
+
+    // ---------- FORM SUBMISSION ----------
+    contactForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // check honeypot
+      // Honeypot check
       const honeypot = contactForm.querySelector("[name='emmie']");
       if (honeypot?.value) return;
 
+      // Validate all fields
       let isValid = true;
-
       Object.keys(fields).forEach((field) => {
-        const input = contactForm.querySelector(`[name="${field}"]`);
-        if (!input) return;
-
         if (!validateField(field)) isValid = false;
       });
-
       if (!isValid) return;
 
-      const formValues = Object.fromEntries(new FormData(contactForm));
-      console.log(formValues);
+      const formData = new FormData(contactForm); // correct FormData
+      const formValues = Object.fromEntries(formData); // optional for JSON
+
+      // Button / spinner state
+      submitButton.disabled = true;
+      submitText.textContent = "Sending";
+      spinner.classList.remove("hidden");
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData, // or JSON.stringify(formValues) if API expects JSON
+        });
+
+        if (response.ok) {
+          hideAll();
+          successPanel?.classList.remove("hidden");
+          if (charCount) charCount.textContent = "";
+
+          // reset form
+          contactForm?.reset();
+
+          contactForm.querySelectorAll(".form__input").forEach((input) => {
+            input.classList.remove("error", "border-green-500");
+          });
+
+          setTimeout(() => {
+            successPanel?.classList.add("hidden");
+            contactForm?.classList.remove("hidden");
+          }, 8000);
+        } else {
+          hideAll();
+          failurePanel?.classList.remove("hidden");
+          setTimeout(() => {
+            failurePanel?.classList.add("hidden");
+            contactForm?.classList.remove("hidden");
+          }, 8000);
+        }
+      } catch (error) {
+        hideAll();
+        failurePanel?.classList.remove("hidden");
+      } finally {
+        submitButton.disabled = false;
+        submitText.textContent = "Submit";
+        spinner.classList.add("hidden");
+      }
     });
   });
 </script>
