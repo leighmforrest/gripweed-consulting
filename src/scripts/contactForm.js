@@ -16,7 +16,6 @@ export function markValid(input) {
   input.classList.add("border-green-500");
 }
 
-
 export function clearError(input) {
   const error = input.parentElement.querySelector(".error-message");
   error.textContent = "";
